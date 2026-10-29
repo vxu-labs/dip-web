@@ -1,0 +1,82 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/.vinext/
+/out/
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+next-env.d.ts
+
+# Maintained Vite plugin and worker sources.
+!/build/
+/build/*
+!/build/connector-preview-plugin.mjs
+!/build/connector-preview-worker.mjs
+!/build/sites-vite-plugin.LICENSE
+!/build/sites-vite-plugin.ts
+!/build/sites-worker.ts
+
+/dist/
+/.wrangler/
+# Checkout-local execution profile and tool state; never publish them.
+/.sites-runtime/
+/.agents/
+/.codex/
+/outputs/
+/work/
+
+.agents/
+.claude/
+AGENTS.md
+CLAUDE.md
+
+!.env.example
+*.tsbuildinfo
+
+# Private development history and runtime state must not enter public source.
+/.dip/*
+!/.dip/config.json
+/.dip-local/
+/.openai/*
+!/.openai/hosting.example.json
+.dev.vars
+.dev.vars.*
+*.key
+*.p12
+*.pfx
+*.sqlite*
+*.db
+*.db-*
+*.log
+/backups/
+/audit-reports/

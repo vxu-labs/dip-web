@@ -1,0 +1,3 @@
+import {landing} from '@/lib/landing';
+export const metadata={title:'DIP — The archaeology of AI development | VXU Labs',description:'AI development moves fast. DIP preserves recorded changes, agent activity, decisions and intent so you can trace how your project evolved.',openGraph:{title:'DIP — The archaeology of AI development',description:'Explore the layers of your project: recorded changes, agents, decisions and intent.',url:'https://dip.vxu.me/',images:['https://dip.vxu.me/assets/dashboard.png']},alternates:{canonical:'https://dip.vxu.me/'}};
+export default function Home(){return <><link rel="stylesheet" href="/style.css"/><div dangerouslySetInnerHTML={{__html:landing}}/><script src="/script.js" defer/></>}

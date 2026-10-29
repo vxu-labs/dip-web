@@ -1,0 +1,14 @@
+DIP Web
+Copyright 2026 DIP Web contributors
+Maintained by VXU Labs (https://github.com/vxu-labs).
+
+Original code is licensed under the Apache License, Version 2.0.
+The ledger projection is adapted from Development Intelligence Platform (DIP),
+Copyright 2026 DIP contributors, also licensed under Apache-2.0.
+
+Vendored Sites build integration and shadcn assets retain their MIT notices.
+See content/ATTRIBUTION.md and the accompanying license files.
+Third-party dependencies retain their own licenses.
+
+DIP Web is an independent project and is not affiliated with OpenAI,
+Anthropic, GitHub, Cloudflare or the Apache Software Foundation.
