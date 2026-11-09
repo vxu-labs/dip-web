@@ -1,5 +1,10 @@
 # Release notes
 
+## 2026-11-09
+
+- Add Skills and Knowledge to the signed-in GitHub workspace. Browse committed sources by project and import a browser-only global skill list from DIP Local.
+- Link to the portable skill migration prompt from the Skills view.
+
 ## 0.1.0 — 2026-10-29
 
 Initial public source release of the DIP website and GitHub workspace.

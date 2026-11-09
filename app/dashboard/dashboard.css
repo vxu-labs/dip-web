@@ -7,3 +7,45 @@
 .task-title h3{min-width:0;max-width:100%;flex:1;overflow-wrap:anywhere}
 .task-main>p{overflow-wrap:anywhere}
 .board-card .task-main{width:100%;max-width:100%}
+
+.dip-library-nav, .dip-library-controls, .dip-library-import {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.dip-library-nav button, .dip-library-controls button, .dip-library-import button {
+  cursor: pointer;
+}
+.dip-library-nav [aria-current="page"] { color: #0075e8; }
+.dip-library h1 { margin: 4px 0 8px; }
+.dip-library > p { margin-bottom: 16px; }
+.dip-library label { display: grid; gap: 5px; font-size: 13px; }
+.dip-library input, .dip-library select {
+  max-width: 100%;
+  border: 1px solid #dce1e9;
+  background: #fff;
+  border-radius: 9px;
+  padding: 8px 10px;
+  color: #23252b;
+}
+.dip-library-import small { align-self: center; }
+.dip-library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 245px), 1fr));
+  gap: 14px;
+  margin: 12px 0;
+}
+.dip-library-card {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #e0e5ec;
+  border-radius: 15px;
+  padding: 16px;
+  overflow-wrap: anywhere;
+}
+.dip-library-card h2 { font-size: 17px; }
+.dip-library-card a { color: #0064c9; font-size: 13px; }

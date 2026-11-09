@@ -1,3 +1,4 @@
+import {projectLibrary} from '@/lib/project-library.mjs';
 import {configuration,configured,session,json} from '@/lib/auth';
 import {safeRepo,integer,sameOrigin,readJSON} from '@/lib/security.mjs';
 import {github,GitHubError,pool,eventBatch} from '@/lib/github.mjs';
@@ -14,6 +15,13 @@ export async function POST(request:Request){
  if(body.action==='repositories'){const install=integer(body.installation,1,Number.MAX_SAFE_INTEGER);const {data,next}=await github(token,`/user/installations/${install}/repositories?per_page=100&page=${page}`);return json({repositories:data.repositories.map(repoInfo),next});}
  if(body.action==='detect'){if(!Array.isArray(body.repositories)||body.repositories.length>8)throw new Error('At most 8 repositories per scan');const results=await pool(body.repositories,async(name:string)=>{const repo=safeRepo(name);try{const {data}=await github(token,`/repos/${repo}/contents/.dip`);return {name:repo,detected:Array.isArray(data)&&data.some((e:any)=>e.name==='events'&&e.type==='dir')};}catch(e){if(e instanceof GitHubError&&e.status===404)return {name:repo,detected:false};return {name:repo,error:e instanceof Error?e.message:'Read failed'};}});return json({results});}
  const repo=safeRepo(body.repo);
+ if(body.action==='library'){
+   const branch=typeof body.branch==='string'&&body.branch.length>0&&body.branch.length<=200
+     ? body.branch
+     : (await github(token,`/repos/${repo}`)).data.default_branch;
+   return json(await projectLibrary(token,repo,branch));
+ }
+
  if(['createTask','updateTask'].includes(body.action))return json(await writeTask(user,{...body,repo}));
  if(body.action==='project'){const {data:info}=await github(token,`/repos/${repo}`);const branch=typeof body.branch==='string'&&body.branch.length<=200?body.branch:info.default_branch;const {data:commit}=await github(token,`/repos/${repo}/commits/${encodeURIComponent(branch)}`);const {data:root}=await github(token,`/repos/${repo}/git/trees/${commit.commit.tree.sha}`);const dip=root.tree.find((e:any)=>e.path==='.dip'&&e.type==='tree');if(!dip)throw new Error('No committed .dip directory on this branch.');const snapshot={repo:repoInfo(info),branch,commit:commit.sha,committedAt:commit.commit.committer.date,tree:dip.sha,syncedAt:new Date().toISOString()};if(body.knownTree===dip.sha)return json({...snapshot,unchanged:true});const tree=await ledgerTree(token,repo,dip.sha);const files=tree.filter((e:any)=>!e.path.startsWith('events/_activity/')).map((e:any)=>({path:e.path,sha:e.sha,size:e.size}));if(files.length>20000)throw new Error('This project exceeds 20,000 task events. Use the local DIP dashboard.');return json({...snapshot,files,eventCount:files.length,activityCount:tree.length-files.length});}
  if(body.action==='blobs'){if(!Array.isArray(body.files)||body.files.length<1||body.files.length>32)throw new Error('Request 1 to 32 event files');let bytes=0;const files=body.files.map((f:any)=>{if(!f||typeof f.path!=='string'||!/^events\/[A-Za-z0-9_-]{1,100}\/[A-Za-z0-9_-]{1,100}\.json$/.test(f.path)||f.path.startsWith('events/_activity/')||typeof f.sha!=='string'||!/^[a-f0-9]{40}$/.test(f.sha))throw new Error('Invalid event file');const size=integer(f.size??0,0,16*1024*1024);bytes+=Math.min(size,1024*1024);return {path:f.path,sha:f.sha,size};});if(bytes>4*1024*1024)throw new Error('Event batch exceeds 4 MiB');return json({events:await eventBatch(token,repo,files)});}
